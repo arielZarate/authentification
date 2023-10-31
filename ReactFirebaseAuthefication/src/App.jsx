@@ -1,5 +1,6 @@
 import { useState } from "react";
-
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "./App.css";
 
 //react-router-dom
@@ -15,20 +16,42 @@ import LoginForm from "./components/Login/Loginform";
 import Register from "./components/Register";
 //=================================
 
+import { setUser, logoutUser } from "./Redux/actions/action"; // Importa las acciones de Redux
 function App() {
-  const [usuario, setUsuario] = useState(null);
+  ///const [usuario, setUsuario] = useState(null); lo paso al reducers
 
-  onAuthStateChanged(auth, (usuarioFirebase) => {
+  const dispatch = useDispatch();
+  const selector = useSelector((state) => state.auth.user);
+
+  console.log("selector", selector);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch(setUser(user));
+      } else {
+        dispatch(logoutUser());
+      }
+    });
+
+    return () => unsubscribe();
+  }, [dispatch]);
+
+  /*  
+
+no lo uso mas lo usare con redux en el reducer
+onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase) {
       setUsuario(usuarioFirebase);
     } else setUsuario(null);
   });
+ */
 
   /*   const PrivateRoute = ({ element }) => {
     return usuario ? element : <Navigate to="/login" />;
   }; */
 
-  const estaAutenticado = usuario !== null;
+  const estaAutenticado = selector !== null;
   return (
     <>
       <Routes>
@@ -41,7 +64,7 @@ function App() {
           path="/cart"
           element={
             estaAutenticado ? (
-              <Cart correoUsuario={usuario} />
+              <Cart correoUsuario={selector} />
             ) : (
               /*  <Navigate to="/login" /> */
               <Login />

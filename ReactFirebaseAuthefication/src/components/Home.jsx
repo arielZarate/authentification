@@ -29,7 +29,7 @@ function Home() {
         articulos
       </p>
       <Link to="/cart">
-        <button type="button" class="btn btn-primary">
+        <button type="button" className="btn btn-primary">
           Ir a carrito
         </button>
       </Link>
