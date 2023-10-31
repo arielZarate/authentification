@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  getAuth,
 } from "firebase/auth";
 
-import { auth } from "../credentials";
-
 import { Navigate } from "react-router-dom";
+import Firebase from "../credentials";
 
 function Register() {
+  const auth = getAuth(Firebase);
   const [input, setInput] = useState({
     /*   name: "",
     lastName: "", */

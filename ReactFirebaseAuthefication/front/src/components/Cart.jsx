@@ -1,14 +1,16 @@
 import React from "react";
-import { signOut } from "firebase/auth";
-import { auth } from "../credentials";
+import { signOut, getAuth } from "firebase/auth";
+
 import { useSelector } from "react-redux";
+import Firebase from "../credentials";
 
 export default function Cart({ correoUsuario }) {
+  const auth = getAuth(Firebase);
   const data = correoUsuario;
 
   const selector = useSelector((state) => state.auth);
 
-  console.log("cart selector", selector);
+  // console.log("cart selector", selector);
   // console.log(data);
   return (
     <div>

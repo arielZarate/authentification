@@ -3,9 +3,12 @@ import { Link, Navigate } from "react-router-dom";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  getAuth,
 } from "firebase/auth";
-import { auth } from "../../credentials";
+import Firebase from "../../credentials";
+
 function Loginform() {
+  const auth = getAuth(Firebase);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);

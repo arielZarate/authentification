@@ -7,28 +7,29 @@ import "./App.css";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 //LOGIN FIREBASE
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./credentials";
+
 import Login from "./components/Login/Login";
 import Home from "./components/Home";
 import Cart from "./components/Cart";
 import LoginForm from "./components/Login/Loginform";
 import Register from "./components/Register";
+//==============================
+import { onAuthStateChanged, getAuth } from "firebase/auth";
+import Firebase from "./credentials";
+
 //=================================
 
 import { setUser, logoutUser } from "./Redux/actions/action"; // Importa las acciones de Redux
 function App() {
   ///const [usuario, setUsuario] = useState(null); lo paso al reducers
-
+  const auth = getAuth(Firebase);
   const dispatch = useDispatch();
   const selector = useSelector((state) => state.auth.user);
 
-  console.log("selector", selector);
-
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        dispatch(setUser(user));
+    const unsubscribe = onAuthStateChanged(auth, (userFirebase) => {
+      if (userFirebase) {
+        dispatch(setUser(userFirebase));
       } else {
         dispatch(logoutUser());
       }
